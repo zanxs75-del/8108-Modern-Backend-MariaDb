@@ -1,0 +1,63 @@
+<%- contentFor('title') %>
+    All Customers
+
+    <%- contentFor('body') %>
+
+        <h1>All Customers</h1>
+
+        <h2>Search</h2>
+        <form method="GET" class="mt-2 mb-2">
+            <div>
+                <label>First Name</label>
+                <input type="text" name="first_name" class="form-control"  value="<%= searchParams.first_name %>"/>
+            </div>
+
+            <div>
+                <label>Last Name</label>
+                <input type="text" name="last_name" class="form-control" value="<%= searchParams.last_name %>" />
+            </div>
+
+            <button class="btn btn-primary mt-3">Search</button>
+        </form>
+
+        <h2>Found Customers</h2>
+        <div>
+            <a class="btn btn-primary" href="/customers/create">Create</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let c of customers) { %>
+                    <tr>
+                        <td>
+                            <%= c.Customers.first_name %>
+                        </td>
+                        <td>
+                            <%= c.Customers.last_name %>
+                        </td>
+                        <td>
+                            <%= c.Customers.email %>
+                        </td>
+                        <td>
+                            <%= c.Companies.name %>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-sm"
+                                href="/customers/<%= c.Customers.customer_id %>/update">Update</a>
+
+                            <a class="btn btn-danger btn-sm" href="/customers/<%= c.Customers.customer_id %>/delete">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
