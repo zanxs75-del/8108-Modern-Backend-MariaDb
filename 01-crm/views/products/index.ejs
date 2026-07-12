@@ -3,6 +3,14 @@
 
     <%- contentFor('body') %>
         <h1>All Products</h1>
+    
+        <form method="GET" action="/products/search">
+            <input type="text" name="searchTerms" placeholders="Search products by natural language" class="form-control" />
+            <button>Search</button>
+        </form>
+    
+    
+    
         <table class="table">
             <thead>
                 <tr>

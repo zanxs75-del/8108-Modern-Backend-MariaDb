@@ -70,5 +70,6 @@ async function generateEmbedding(text) {
 }
 
 module.exports = {
-    generateEmbedding, chunkPDF
+    generateEmbedding, 
+    chunkPDF
 }

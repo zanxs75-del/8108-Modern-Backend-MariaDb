@@ -11,6 +11,7 @@ const path = require('path');
 // fs is the file system (operating system functions to manage files)
 const fs = require('fs');
 const { chunkPDF, generateEmbedding } = require('./rag');
+const { PDFDataRangeTransport } = require('pdf-parse');
 
 // enable file upload
 router.use(fileUpload());
@@ -26,6 +27,43 @@ router.get('/', async function (req, res) {
         results: products
     });
 
+})
+
+router.get('/search', async function(req, res){
+    //extract out the query string
+    const query = req.query.searchTerms;
+    
+    if (!query) {
+        return res.redirect('/products');
+    }
+
+    //create the embedding from query
+    const queryEmbedding = await generateEmbedding(query);
+    const vectorString = '[' + queryEmbedding + ']';
+
+    //do the vector search
+    const [results] = await connection.execute(`
+        SELECT DISTINCT
+            Products.products_id,
+            Products.name,
+            Products.description,
+            Products.pdf_id,
+            PDF.filename,
+            PDF.original_filename,
+            PDFChunks.chunk_text,
+            VEC_DISTANCE(PDFChunks.embedding, VEC_FromText(?)) AS distance
+        FROM PDFChunks
+            JOIN PDF ON PDFChunks.pdf_id = PDF.pdf_id
+            JOIN Products ON Products.pdf_id = PDF.pdf_id
+        ORDER BY distance ASC
+        LIMIT 10
+    `, [vectorString]);
+
+    res.render('products/search', {
+        query: query,
+        results: results
+
+    })    
 })
 
 router.get('/:product_id', async function (req, res) {

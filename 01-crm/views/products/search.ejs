@@ -1,0 +1,51 @@
+<%- contentFor('title') %>
+Search Products
+
+<%- contentFor('body') %>
+<form method="GET">
+    <input type="text" name="searchTerms" placeholders="Search products by natural language"
+       class="form-control"/>
+    <button>Search</button>
+</form>
+
+<% if (query) { %>
+<h1>
+    Search Results for :<%= query %>
+</h1>
+<% } %>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Matching Content</th>
+            <th>Relevance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% results.forEach(function(result){ %>
+            <tr>
+                <td>
+                    <%= result.name %>
+                </td>
+                <td>
+                    <%= result.description %>
+                </td>
+                <td>
+                    <% result.chunk_text.substring(0, 150) + "..." %>
+                </td>
+                <td>
+                    <% (1 - result.distance).toFixed(3) %>
+                </td>
+                <td>
+                    <a href="/products/<%= result.product_id %>">View</a>
+                </td>
+            </tr>
+
+        <% }) %>
+    </tbody>
+</table>
+
+
+}
