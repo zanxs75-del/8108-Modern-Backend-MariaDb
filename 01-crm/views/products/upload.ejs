@@ -1,0 +1,11 @@
+<%- contentFor('title') %>
+Uploading PDF
+
+<%- contentFor('body') %>
+<h1>Upload PDF for <%= product.name %></h1>
+<!-- If the form is to upload a file, it must have enctype="multipart/form-data" -->
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="pdf" accept=".pdf" required class="form-control"/>
+    <button class="btn btn-primary mt-3">Upload</button>
+
+</form>
