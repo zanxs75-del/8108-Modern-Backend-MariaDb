@@ -1,6 +1,6 @@
 const {readFile} = require('node:fs/promises');
 const {PDFParse} = require('pdf-parse');
-const { ai} = require('./gemini');
+const { ai} = require('./views/gemini');
 
 // all embeddings must use back the same model
 const EMBEDDING_MODEL = 'gemini-embedding-001';
